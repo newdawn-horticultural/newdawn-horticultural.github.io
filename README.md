@@ -4,7 +4,7 @@
 New Dawn公式サイトの既存5記事を引き継いだブログです。
 
 - 公式ホームページ：https://www.newdawn-horticultural.com/
-- 公開予定URL：https://engeishokubutu365-crypto.github.io/new-dawn-blog/
+- 公開予定URL：https://newdawn-horticultural.github.io/
 
 ## 初回の公開設定
 

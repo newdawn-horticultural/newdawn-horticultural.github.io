@@ -23,7 +23,7 @@
 
 ## 新しいブログはこちら
 
-[New Dawnのブログを開く](https://engeishokubutu365-crypto.github.io/new-dawn-blog/)
+[New Dawnのブログを開く](https://newdawn-horticultural.github.io/)
 
 これまでの記事と写真も引き継いでいます。記事一覧から過去の活動を振り返ったり、カテゴリや検索欄から気になる記事を探したりできます。
 お気に入りやブックマークに登録してくださっている方は、新しいURLへの変更をお願いいたします。
