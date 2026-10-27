@@ -19,6 +19,7 @@ args_parser.add_argument('--site-url', default='')
 args_parser.add_argument('--preview', action='store_true')
 args = args_parser.parse_args()
 SITE = args.site_url.rstrip('/')
+GA_MEASUREMENT_ID = 'G-XHW2ZMRL8H'
 H = html.escape
 STYLE_FILE = 'style-' + hashlib.sha256((ROOT/'assets/style.css').read_bytes()).hexdigest()[:12] + '.css'
 PHOTO_METADATA = {p['file']: p for p in json.loads((ROOT/'photo-migration.json').read_text())} if (ROOT/'photo-migration.json').exists() else {}
@@ -124,8 +125,21 @@ def document(title, description, content, prefix='.', path='', active='all', art
     if social_image and SITE:
         meta += '<meta property="og:image" content="'+H(SITE+'/'+social_image,quote=True)+'">'
     preview = '<div class="preview-notice">移行プレビュー <span>既存記事を引き継いだ確認用ブログです</span></div>' if args.preview else ''
+    analytics = ''
+    if not args.preview and SITE == 'https://newdawn-horticultural.github.io':
+        analytics = f'''<!-- Google Analytics: blog audience measurement -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){{dataLayer.push(arguments);}}
+gtag('js', new Date());
+gtag('config', '{GA_MEASUREMENT_ID}', {{
+  'allow_google_signals': false,
+  'allow_ad_personalization_signals': false
+}});
+</script>'''
     return f'''<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ja"><head>{analytics}<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{H(title)}｜New Dawn</title><meta name="description" content="{H(description, quote=True)}">
 <meta name="theme-color" content="#005b5b"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:title" content="{H(title, quote=True)}｜New Dawn"><meta property="og:description" content="{H(description, quote=True)}"><meta property="og:locale" content="ja_JP"><meta property="og:site_name" content="New Dawn ブログ">
 {meta}<link rel="icon" href="{prefix}/assets/brand/favicon.png" type="image/png"><link rel="apple-touch-icon" href="{prefix}/assets/brand/logo.png"><link rel="stylesheet" href="{prefix}/assets/{STYLE_FILE}"><script src="{prefix}/assets/app.js" defer></script>{structured}</head>
@@ -134,7 +148,7 @@ def document(title, description, content, prefix='.', path='', active='all', art
 <nav class="main-nav" aria-label="メインナビゲーション"><a href="{route(prefix,'')}"{(' aria-current="page"' if active == 'all' and not article else '')}>すべての記事</a>{nav}<a class="official" href="{MAIN}">公式サイトへ <span aria-hidden="true">↗</span></a></nav>
 </div></header>
 <main id="main">{content}</main>
-<footer class="site-footer"><div class="footer-inner"><div><a class="footer-brand" href="{route(prefix,'')}"><img src="{prefix}/assets/brand/logo.png" alt="" width="36" height="36">New Dawn</a><p>園芸療法と幸福学をめぐる、実践と研究の記録。</p></div><a href="{MAIN}" class="footer-link">New Dawn 公式サイトへ <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© New Dawn</span><a href="{prefix}/feed.xml">RSSで購読</a><a href="#">ページの先頭へ ↑</a></div></footer></body></html>'''
+<footer class="site-footer"><div class="footer-inner"><div><a class="footer-brand" href="{route(prefix,'')}"><img src="{prefix}/assets/brand/logo.png" alt="" width="36" height="36">New Dawn</a><p>園芸療法と幸福学をめぐる、実践と研究の記録。</p></div><a href="{MAIN}" class="footer-link">New Dawn 公式サイトへ <span aria-hidden="true">↗</span></a></div><div class="footer-bottom"><span>© New Dawn</span><a href="{prefix}/feed.xml">RSSで購読</a><a href="{route(prefix,'privacy/')}">アクセス解析について</a><a href="#">ページの先頭へ ↑</a></div></footer></body></html>'''
 
 def category_pill(post, prefix):
     return f'<a class="pill {post["category"]}" href="{route(prefix,"categories/" + post["category"] + "/")}">{CATEGORIES[post["category"]]}</a>'
@@ -203,6 +217,15 @@ if not args.preview:
         page = re.sub(r'<aside class="source-note">.*?<a href="([^"]+)">.*?</aside>', lambda m: '<!-- Original article: ' + m[1] + ' -->', page, flags=re.S)
         path.write_text(page)
 
+privacy_content = '''<div class="article-shell wrap"><article class="article"><header class="article-header"><h1>アクセス解析について</h1></header><div class="article-body">
+<p>New Dawnブログでは、記事の閲覧状況を把握し、内容や使いやすさを改善するためにGoogle アナリティクス（GA4）を使用しています。</p>
+<p>Googleタグを通じて、閲覧したページ、参照元、端末・ブラウザの情報、Cookieなどの識別子に基づく利用状況がGoogleへ送信されます。当ブログから氏名やメールアドレスを測定データとして送信する設定は行っていません。</p>
+<p>当ブログのタグでは、Googleシグナルと広告のパーソナライズ機能を無効にしています。</p>
+<p>詳しくは<a href="https://policies.google.com/technologies/partner-sites?hl=ja">Googleによるサイトやアプリから収集した情報の使用</a>と<a href="https://policies.google.com/privacy?hl=ja">Googleのプライバシーポリシー</a>をご覧ください。対応するパソコンのブラウザでは、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja">Google アナリティクス オプトアウト アドオン</a>を利用できます。</p>
+<p>2026年10月28日 制定</p></div><div class="article-actions"><a class="back-link" href="../">← ブログへ戻る</a></div></article></div>'''
+(OUT/'privacy').mkdir(exist_ok=True)
+(OUT/'privacy/index.html').write_text(document('アクセス解析について', 'New Dawnブログのアクセス解析とデータの取り扱いについて。', privacy_content, '..', 'privacy/'))
+
 # RSS uses absolute URLs when a hosting origin is known.
 feed_items=[]
 for post in posts:
@@ -210,7 +233,7 @@ for post in posts:
     timestamp = dt.datetime.fromisoformat(post['date']).replace(tzinfo=dt.timezone(dt.timedelta(hours=9))).strftime('%a, %d %b %Y %H:%M:%S %z')
     feed_items.append(f'<item><title>{H(post["title"])}</title><link>{H(link)}</link><guid isPermaLink="true">{H(link)}</guid><description>{H(post["description"])}</description><pubDate>{timestamp}</pubDate></item>')
 (OUT/'feed.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>New Dawn ブログ</title><link>'+H(SITE or MAIN)+'</link><description>園芸療法と幸福学をめぐる実践と研究の記録</description><language>ja</language>'+''.join(feed_items)+'</channel></rss>')
-routes=['']+[f'categories/{key}/' for key in CATEGORIES]+[f'posts/{p["slug"]}/' for p in posts]
+routes=['', 'privacy/']+[f'categories/{key}/' for key in CATEGORIES]+[f'posts/{p["slug"]}/' for p in posts]
 if SITE:
     (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+H(SITE+'/'+route)+'</loc></url>' for route in routes)+'</urlset>')
 (OUT/'robots.txt').write_text('User-agent: *\nDisallow: /\n' if args.preview else ('User-agent: *\nAllow: /\n'+('Sitemap: '+SITE+'/sitemap.xml\n' if SITE else '')))
