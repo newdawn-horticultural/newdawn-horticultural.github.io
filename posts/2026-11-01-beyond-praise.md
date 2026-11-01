@@ -2,7 +2,7 @@
 {
   "date": "2026-11-01",
   "slug": "beyond-praise",
-  "title": "「上手ですね」の、その先へ ― 園芸の時間に、その人の工夫を言葉で返す",
+  "title": "「育てた時間も言葉で返す」-園芸療法で大切にしたい声かけ",
   "category": "column",
   "topic": "園芸療法／植物と人の関わり",
   "author": "New Dawn",
