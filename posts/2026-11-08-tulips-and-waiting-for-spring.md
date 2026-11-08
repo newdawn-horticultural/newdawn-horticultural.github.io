@@ -7,8 +7,8 @@
   "topic": "園芸療法／植物と人の関わり",
   "author": "New Dawn",
   "description": "自分の手で植えた場所が、春を待つ楽しみになる。チューリップの球根植えから、植えた日とその後の暮らしをつなぐ園芸療法の関わりを考えます。",
-  "cover_image": "assets/images/tulips-planting.jpg",
-  "cover_alt": "畝に並べたチューリップの球根",
+  "cover_image": "assets/images/tulips-planting-v2.jpg",
+  "cover_alt": "チューリップの球根を植える手元と畝の様子",
   "source_url": ""
 }
 ---
@@ -19,7 +19,7 @@
 
 園芸療法でも、この「これからを楽しみにする時間」を大切にしたいと思っています。
 
-![畝に並べたチューリップの球根](assets/images/tulips-planting.jpg)
+![チューリップの球根を植える手元と畝の様子](assets/images/tulips-planting-v2.jpg)
 
 ## 植えた場所に、自分とのつながりが生まれる
 
@@ -29,7 +29,7 @@
 
 花が咲くまでの間にも、植物と関わるきっかけは続いていきます。自分の手で植えた経験が、日々の暮らしの中に、小さな楽しみをつくることもあるのではないでしょうか。
 
-![チューリップの球根を植える作業の様子](assets/images/tulips-bulbs-row.jpg)
+![畝に並べたチューリップの球根を低い位置から見た様子](assets/images/tulips-bulbs-row-v2.jpg)
 
 ## 待つ時間を、一緒に過ごす
 
@@ -41,7 +41,9 @@
 
 園芸療法では、本人の関心やペースに合わせながら、植えた日と、その後の暮らしをつなぐ関わりも大切にしたいところです🌱
 
-![土の上に並ぶチューリップの球根と畑の風景](assets/images/tulips-spring-place.jpg)
+![土の上に並ぶチューリップの球根と畑の風景](assets/images/tulips-spring-place-v2.jpg)
+
+![手袋を着けた手でチューリップの球根を植える様子](assets/images/tulips-planting-closeup-v2.jpg)
 
 ## 春にもう一度この場所で！
 
